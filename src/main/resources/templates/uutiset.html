@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Uutiset</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+
+        <h1>Uutiset</h1>
+
+        <ul>
+            <li th:each="uutinen : ${uutiset}">
+                <span th:text="${uutinen.name}">item</span> (<span th:text="${uutinen.kirjoittaja}">999</span>$)
+                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="POST">
+                    <input type="submit" value="Uutinen"/>
+                </form>
+            </li>
+        </ul>
+
+        <form th:action="@{/uutiset}" method="POST">
+            <span>Name:</span>
+            <input type="text" name="name"/>
+            <input type="submit" value="lisää!"/>
+        </form>        
+        
+    </body>
+</html>
