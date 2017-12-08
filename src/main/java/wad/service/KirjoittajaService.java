@@ -30,7 +30,6 @@ public class KirjoittajaService {
         Kirjoittaja kirjoittaja = kirjoittajaRepository.getOne(id);
     // tarkista uutiset ja poista kaikista niistä joissa on.
     
-        kirjoittajaRepository.deleteById(id);
-         
+        kirjoittajaRepository.deleteById(id);        
     }
 }

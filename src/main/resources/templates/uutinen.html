@@ -7,14 +7,17 @@
     <body>
 
         <header th:replace="fragments/header :: header">
-            <p>header with links etc</p>
+            <p>headeri...</p>
         </header>
 
-        <h2>Past orders sent to ..</h2>
+        <h2 th:text="${uutinen.otsikko}">Uutinen</h2>
 
-        <ul>
-            <li th:each="order : ${orders}" th:text="${order.name}">user name</li>
-        </ul>
+        <p th:text="${uutinen.ingressi}">ingressi</p>
 
+        <p th:text="${uutinen.teksti}">teksti</p>
+        <p th:text="${uutinen.julkaisuaika}">julkaisuaika</p>
+        <p th:each="kirjoittaja : ${kirjoittajat}" th:text="${kirjoittaja}">kirjoittajat</p>
+        <p th:each="kategoria : ${kategoriat}" th:text="${uutinen.kategoria}">kategoriat</p>        
+<!-- -->      
     </body>
 </html>

@@ -1,10 +1,13 @@
 package wad.service;
 
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wad.domain.Kategoria;
 import wad.domain.Kirjoittaja;
 import wad.domain.Uutinen;
+import wad.repository.KategoriaRepository;
+import wad.repository.KirjoittajaRepository;
 import wad.repository.UutinenRepository;
 
 @Service
@@ -12,7 +15,11 @@ public class UutinenService {
     
     @Autowired
     private UutinenRepository uutinenRepository;
-
+    @Autowired
+    private KirjoittajaRepository kirjoittajaRepository;
+    @Autowired
+    private KategoriaRepository kategoriaRepository;    
+    
     public void addKirjoittaja(Long id, Kirjoittaja kirjoittaja) {
         
         Uutinen uutinen = uutinenRepository.getOne(id);
@@ -48,4 +55,24 @@ public class UutinenService {
         uutinenRepository.deleteById(id);
          
     }
+
+    @Transactional
+    public void LiitaKirjoittaja(Long uutinenId, Long kirjoittajaId) {
+        Uutinen uutinen = uutinenRepository.getOne(uutinenId);
+        Kirjoittaja kirjoittaja = kirjoittajaRepository.getOne(kirjoittajaId);
+
+        uutinen.addKirjoittaja(kirjoittaja);
+        kirjoittaja.addUutinen(uutinen);
+    }
+
+    @Transactional
+    public void LiitaKategoria(Long uutinenId, Long kategoriaId) {
+        System.out.println("SRV: Liitä kate");
+        Uutinen uutinen = uutinenRepository.getOne(uutinenId);
+        Kategoria kategoria = kategoriaRepository.getOne(kategoriaId);
+
+        uutinen.addKategoria(kategoria);
+        kategoria.addUutinen(uutinen);
+    }    
+    
 }

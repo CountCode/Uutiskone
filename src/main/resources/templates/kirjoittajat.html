@@ -19,10 +19,13 @@
                 <form th:action="@{/kirjoittajat/{id}(id=${kirjoittaja.id})}" th:method="POST"><input type="submit" value="Muokkaa"/></form>
             </li>
         </ul>
+        
+        <h2>Lisää kirjoittaja</h2>
         <form th:action="@{/kirjoittajat}" method="POST">
             <span>Nimi:</span>
             <input type="text" name="nimi"/>
             <input type="submit" value="Lisää!"/>
         </form>
+       
     </body>
 </html>

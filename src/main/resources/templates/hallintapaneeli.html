@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Hallintapaneeli</title>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+
+        <header th:replace="fragments/header :: header">
+            <p>headeri linkeillä</p>
+        </header>
+
+        <h2>Uutiset</h2>
+
+        <ul>
+            <li th:each="uutinen : ${uutiset}">
+                <span th:text="${uutinen.otsikko}">item name</span>
+                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="DELETE"><input type="submit" value="Poista"/></form>
+                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="POST"><input type="submit" value="Muokkaa"/></form>
+                <form th:action="@{/uutiset/{uutinenId}/kirjoittajat(uutinenId=${uutinen.id})}" method="POST">
+                    <select name="kirjoittajaId">
+                        <option th:each="kirjoittaja : ${kirjoittajat}" th:value="${kirjoittaja.id}" th:text="${kirjoittaja.nimi}"></option>
+                    </select>
+                    <input type="submit" value="Lisää kirjoittaja"/>
+                </form>
+                <form th:action="@{/uutiset/{uutinenId}/kategoriat(uutinenId=${uutinen.id})}" method="POST">
+                    <select name="kategoriaId">
+                        <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" th:text="${kategoria.nimi}"></option>
+                    </select>
+                    <input type="submit" value="Lisää kategoria"/>
+                </form>
+            </li>
+        </ul>
+      
+        <h2>Lisää uutinen</h2>
+
+        <form action="/uutiset" method="POST">
+            <span>Otsikko:</span>
+            <input type="text" name="otsikko"/><br/>
+            <span>Ingressi:</span>
+            <textarea name="ingressi" rows="5" cols="30"></textarea><br/>              
+<!--            <input type="text" name="ingressi"/><br/> 
+-->
+            <span>Kuva:</span>            
+            <input type="file" name="kuva"/><br/>            
+            <span>Teksti:</span>
+            <textarea name="teksti" rows="10" cols="30"></textarea><br/>            
+<!--            <input type="text" name="teksti"/><br/>      
+-->
+            <input type="submit" value="Lisää!"/>
+        </form>        
+  
+
+    
+        
+    </body>
+</html>
