@@ -14,9 +14,11 @@
 
         <ul>
             <li th:each="uutinen : ${uutiset}">
-                <span th:text="${uutinen.otsikko}">item</span> (<span th:text="${uutinen.id}">999</span>)
+                <h3 th:text="${uutinen.otsikko}">Uutinen</h3>
+                <p>Ingressi: <span th:text="${uutinen.ingressi}"></span></p>                
+                <img th:src="@{/kuva/{kuvaId}(kuvaId=${uutinen.kuvaObjektiId})}" alt="Kuva" style="width:150px;height:150px;"></img>                
                 <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="GET">
-                    <input type="submit" value="Uutinen"/>
+                    <input type="submit" value="Uutiseen"/>
                 </form>
             </li>
         </ul>

@@ -24,6 +24,7 @@ public class KirjoittajaController {
     @Autowired
     private UutinenRepository uutinenRepository;
     
+ 
     @GetMapping("/hallintapaneeli")
     public String hallintapaneeli(Model model) {
         model.addAttribute("uutiset", uutinenRepository.findAll());

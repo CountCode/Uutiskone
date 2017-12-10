@@ -8,6 +8,7 @@ import wad.domain.Kirjoittaja;
 import wad.domain.Uutinen;
 import wad.repository.KategoriaRepository;
 import wad.repository.KirjoittajaRepository;
+import wad.repository.KuvaRepository;
 import wad.repository.UutinenRepository;
 
 @Service
@@ -18,7 +19,9 @@ public class UutinenService {
     @Autowired
     private KirjoittajaRepository kirjoittajaRepository;
     @Autowired
-    private KategoriaRepository kategoriaRepository;    
+    private KategoriaRepository kategoriaRepository;
+    @Autowired
+    private KuvaRepository kuvaRepository;    
     
     public void addKirjoittaja(Long id, Kirjoittaja kirjoittaja) {
         
@@ -50,7 +53,7 @@ public class UutinenService {
     
     public void RemoveUutinen(Long id) {
         Uutinen uutinen = uutinenRepository.getOne(id);
-    // tarkista kirjoittjat ja gategoriat sekä poista kaikista niistä joissa on.
+    // tarkista kirjoittajat ja gategoriat sekä poista kaikista niistä joissa on.
     
         uutinenRepository.deleteById(id);
          
@@ -74,5 +77,21 @@ public class UutinenService {
         uutinen.addKategoria(kategoria);
         kategoria.addUutinen(uutinen);
     }    
+
+    public void poistaUutinen(Uutinen uutinen) {
+        for (Kirjoittaja kirjoittaja : uutinen.getKirjoittajat()){
+            kirjoittaja.getUutiset().remove(uutinen.getId());
+            kirjoittajaRepository.save(kirjoittaja);
+        }
+
+        for (Kategoria kategoria : uutinen.getKategoriat()){
+            kategoria.getUutiset().remove(uutinen.getId());
+            kategoriaRepository.save(kategoria);
+        }
+        
+        kuvaRepository.deleteById(uutinen.getKuvaObjektiId());
+        
+        uutinenRepository.deleteById(uutinen.getId());
+    }
     
 }

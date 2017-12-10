@@ -12,12 +12,13 @@
 
         <h2 th:text="${uutinen.otsikko}">Uutinen</h2>
 
-        <p th:text="${uutinen.ingressi}">ingressi</p>
-
-        <p th:text="${uutinen.teksti}">teksti</p>
-        <p th:text="${uutinen.julkaisuaika}">julkaisuaika</p>
-        <p th:each="kirjoittaja : ${kirjoittajat}" th:text="${kirjoittaja}">kirjoittajat</p>
-        <p th:each="kategoria : ${kategoriat}" th:text="${uutinen.kategoria}">kategoriat</p>        
+        <p>Ingressi: <span th:text="${uutinen.ingressi}"></span></p>
+        <img th:src="@{/kuva/{kuvaId}(kuvaId=${uutinen.kuvaObjektiId})}" alt="Kuva" style="width:400px;height:400px;"></img>
+        <p>Teksti:  <span th:text="${uutinen.teksti}"></span></p>
+        <p>Julkaisuaika: <span th:text="${uutinen.julkaisuaika}"></span></p>
+        <p>Kirjoittajat: <span th:each="kirjoittaja : ${uutinen.kirjoittajat}" th:text="${kirjoittaja.nimi}"> </span></p>
+        <p>Kategoriat: <span th:each="kategoria : ${uutinen.kategoriat} " th:text="${kategoria.nimi}"> </span></p> 
+        <p>Lukumäärä: <span th:text="${uutinen.lukumaara}"></span></p>        
 <!-- -->      
     </body>
 </html>

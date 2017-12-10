@@ -1,5 +1,6 @@
 package wad.controller;
 
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,20 @@ public class KategoriaController {
         
     @Autowired
     private KategoriaRepository kategoriaRepository;
+    
+    @PostConstruct
+    public void init() {
+        Kategoria ktg = new Kategoria();
+        ktg.setNimi("Ohjelmointi");
+        kategoriaRepository.save(ktg);
+        ktg = new Kategoria();
+        ktg.setNimi("Opetus");
+        kategoriaRepository.save(ktg);        
+        ktg = new Kategoria();
+        ktg.setNimi("Osaaminen");
+        kategoriaRepository.save(ktg);        
+    }
+    
     
     @GetMapping("/kategoriat")
     public String kategoriat(Model model) {

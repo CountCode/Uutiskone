@@ -29,6 +29,11 @@
                     </select>
                     <input type="submit" value="Lisää kategoria"/>
                 </form>
+                <form th:action="@{/uutiset/{uutinenId}/kuva(uutinenId=${uutinen.id})}" method="POST" enctype="multipart/form-data">
+                    <span>Kuva:</span>            
+                    <input type="file" name="kuvaFile"/>                    
+                    <input type="submit" value="Lisää kuva"/>
+                </form>    
             </li>
         </ul>
       
@@ -40,10 +45,10 @@
             <span>Ingressi:</span>
             <textarea name="ingressi" rows="5" cols="30"></textarea><br/>              
 <!--            <input type="text" name="ingressi"/><br/> 
--->
             <span>Kuva:</span>            
             <input type="file" name="kuva"/><br/>            
-            <span>Teksti:</span>
+-->
+<span>Teksti:</span>
             <textarea name="teksti" rows="10" cols="30"></textarea><br/>            
 <!--            <input type="text" name="teksti"/><br/>      
 -->

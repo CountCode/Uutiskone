@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class Kirjoittaja extends AbstractPersistable<Long> {
     private String nimi;
     @ManyToMany(mappedBy = "kirjoittajat")
     private List<Uutinen> uutiset;
+    @OneToOne
+    private Account account;
     
         public void addUutinen(Uutinen uutinen){
         if (this.uutiset!=null){

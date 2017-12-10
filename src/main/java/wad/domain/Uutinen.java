@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,15 +22,15 @@ public class Uutinen extends AbstractPersistable<Long> {
 
     private String otsikko;
     private String ingressi;
-    @Lob
-    private byte[]kuva;
+    private Long kuvaObjektiId;
     @Lob
     private String teksti;
     private LocalDateTime julkaisuaika;
     @ManyToMany
-    private List<Kirjoittaja> kirjoittajat;
+    private List<Kirjoittaja> kirjoittajat = new ArrayList<>();;
     @ManyToMany
-    private List<Kategoria> kategoriat;
+    private List<Kategoria> kategoriat = new ArrayList<>();;
+    private int lukumaara;
        
     public void addKirjoittaja(Kirjoittaja kirjoittaja){
         System.out.println("Lisää kirjoittaja");
@@ -52,4 +54,7 @@ public class Uutinen extends AbstractPersistable<Long> {
         }
     }        
     
+    public void luettu(){
+        this.lukumaara++;
+    }
 }

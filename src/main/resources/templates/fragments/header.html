@@ -13,7 +13,10 @@
                 <li><a th:href="@{/kirjoittajat}">Kirjoittajat</a></li>
                 <li><a th:href="@{/kategoriat}">Kategoriat</a></li>                
             </ul>
-        </header>
+           <form th:action="@{/logout}" method="POST">
+               <input type="submit" value="Logout"></input>
+           </form>
 
+        </header>
     </body>
 </html>
