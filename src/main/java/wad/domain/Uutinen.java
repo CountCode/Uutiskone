@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 
@@ -24,6 +26,7 @@ public class Uutinen extends AbstractPersistable<Long> {
     private String ingressi;
     private Long kuvaObjektiId;
     @Lob
+    @Type(type="text")
     private String teksti;
     private LocalDateTime julkaisuaika;
     @ManyToMany
