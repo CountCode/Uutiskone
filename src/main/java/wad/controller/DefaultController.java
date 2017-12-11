@@ -48,7 +48,8 @@ public class DefaultController {
         
         user = new Account();
         user.setUsername("user2");
-        user.setPassword(passwordEncoder.encode(${USER2PASSWORD}));
+	final String pwd2 = System.getenv("USER2PASSWORD");
+        user.setPassword(passwordEncoder.encode(pwd2));
         accountRepository.save(user);
 
         kirjoittaja2.setAccount(user);
