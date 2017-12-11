@@ -7,6 +7,7 @@ import wad.domain.Uutinen;
 
 public interface UutinenRepository extends JpaRepository<Uutinen, Long> {
  //    List<Uutinen> findByKategoria(String nimi);
-     List<Uutinen> findByJulkaisuaika(LocalDateTime julkaisuaika);
+    List<Uutinen> findByOtsikko(String otsikko);
+    List<Uutinen> findByJulkaisuaika(LocalDateTime julkaisuaika);
 //     List<Uutinen> findByLukumaara(int lukum);
 }

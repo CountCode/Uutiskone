@@ -16,8 +16,17 @@
         <img th:src="@{/kuva/{kuvaId}(kuvaId=${uutinen.kuvaObjektiId})}" alt="Kuva" style="width:400px;height:400px;"></img>
         <p>Teksti:  <span th:text="${uutinen.teksti}"></span></p>
         <p>Julkaisuaika: <span th:text="${uutinen.julkaisuaika}"></span></p>
-        <p>Kirjoittajat: <span th:each="kirjoittaja : ${uutinen.kirjoittajat}" th:text="${kirjoittaja.nimi}"> </span></p>
-        <p>Kategoriat: <span th:each="kategoria : ${uutinen.kategoriat} " th:text="${kategoria.nimi}"> </span></p> 
+        <span>Kirjoittajat: </span>
+        <ul th:each="kirjoittaja : ${uutinen.kirjoittajat}">
+            <li th:text="${kirjoittaja.nimi}">
+            </li>
+        </ul>        
+        <span>Kategoriat: </span> 
+        <ul th:each="kategoria : ${uutinen.kategoriat} " >
+            <li th:text="${kategoria.nimi}">
+            </li>
+        </ul> 
+        
         <p>Lukumäärä: <span th:text="${uutinen.lukumaara}"></span></p>        
 <!-- -->      
     </body>

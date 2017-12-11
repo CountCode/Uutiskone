@@ -70,7 +70,6 @@ public class UutinenService {
 
     @Transactional
     public void LiitaKategoria(Long uutinenId, Long kategoriaId) {
-        System.out.println("SRV: Liitä kate");
         Uutinen uutinen = uutinenRepository.getOne(uutinenId);
         Kategoria kategoria = kategoriaRepository.getOne(kategoriaId);
 

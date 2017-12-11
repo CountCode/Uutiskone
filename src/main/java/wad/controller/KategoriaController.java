@@ -25,14 +25,20 @@ public class KategoriaController {
     @PostConstruct
     public void init() {
         Kategoria ktg = new Kategoria();
-        ktg.setNimi("Ohjelmointi");
-        kategoriaRepository.save(ktg);
+        if (kategoriaRepository.findByNimi("Ohjelmointi").isEmpty()){
+            ktg.setNimi("Ohjelmointi");
+            kategoriaRepository.save(ktg);        
+        }
         ktg = new Kategoria();
-        ktg.setNimi("Opetus");
-        kategoriaRepository.save(ktg);        
+        if (kategoriaRepository.findByNimi("Opetus").isEmpty()){
+            ktg.setNimi("Opetus");
+            kategoriaRepository.save(ktg);        
+        }
         ktg = new Kategoria();
-        ktg.setNimi("Osaaminen");
-        kategoriaRepository.save(ktg);        
+        if (kategoriaRepository.findByNimi("Osaaminen").isEmpty()){
+            ktg.setNimi("Osaaminen");
+            kategoriaRepository.save(ktg);        
+        }
     }
     
     

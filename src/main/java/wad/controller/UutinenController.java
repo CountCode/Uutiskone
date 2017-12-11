@@ -1,14 +1,9 @@
 package wad.controller;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,9 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import wad.domain.Account;
 import wad.domain.Kirjoittaja;
@@ -56,29 +49,35 @@ public class UutinenController {
     @PostConstruct
     public void init() {
         Uutinen uut = new Uutinen();
-        uut.setOtsikko("Opi ohjelmoimaan");
-        uut.setIngressi("Ohjelmoini on kivaa. Varsinkin Web-ohjelmointi. Ja erityisesti Javalla.");
-        uut.setJulkaisuaika(LocalDateTime.now());
-        uut.setLukumaara(0);
-        uut.setTeksti("Web-ohjelmointi Javalla on tosi kivaa. "
-                + "Kaikkien pitäisi opetella ohjelmoimaan Web-sovelluksia. "
-                + "Niitä voi sitten yllä pitää GitHub:ssa ja julkaista Herokussa."
-                + "Vieläkö kun laittaa Travis CI huolehtimaan testauksesta automaattisesti "
-                + "saadaan tosi kätevä pipeline ohjelmistotuotantoon.");
+            if (uutinenRepository.findByOtsikko("Opi ohjelmoimaan").isEmpty()){
 
-        uutinenRepository.save(uut);
-        
-        uut = new Uutinen();
-        uut.setOtsikko("Muuta kivaa");
-        uut.setIngressi("Muuta harrastuksia. Liikunta, lukeminen, laulu.");
-        uut.setJulkaisuaika(LocalDateTime.now());
-        uut.setLukumaara(0);
-        uut.setTeksti("Vaikka ohjelmointi onkin tosi kivaa muitakin asioita kannataa tehdä."
-                + " Liikunta laittaa veren kiertämään niin että aivotkin saavat happea "
-                + "samalla aineenvaihdunta paranee.");
+            uut.setOtsikko("Opi ohjelmoimaan");
+            uut.setIngressi("Ohjelmoini on kivaa. Varsinkin Web-ohjelmointi. Ja erityisesti Javalla.");
+            uut.setJulkaisuaika(LocalDateTime.now());
+            uut.setLukumaara(0);
+            uut.setTeksti("Web-ohjelmointi Javalla on tosi kivaa. "
+                    + "Kaikkien pitäisi opetella ohjelmoimaan Web-sovelluksia. "
+                    + "Niitä voi sitten yllä pitää GitHub:ssa ja julkaista Herokussa."
+                    + "Vieläkö kun laittaa Travis CI huolehtimaan testauksesta automaattisesti "
+                    + "saadaan tosi kätevä pipeline ohjelmistotuotantoon.");
 
-        uutinenRepository.save(uut);
+            uutinenRepository.save(uut);
+      
+        }
         
+        if (uutinenRepository.findByOtsikko("Muuta kivaa").isEmpty()){
+
+            uut = new Uutinen();
+            uut.setOtsikko("Muuta kivaa");
+            uut.setIngressi("Muuta harrastuksia. Liikunta, lukeminen, laulu.");
+            uut.setJulkaisuaika(LocalDateTime.now());
+            uut.setLukumaara(0);
+            uut.setTeksti("Vaikka ohjelmointi onkin tosi kivaa muitakin asioita kannataa tehdä."
+                    + " Liikunta laittaa veren kiertämään niin että aivotkin saavat happea "
+                    + "samalla aineenvaihdunta paranee.");
+
+            uutinenRepository.save(uut);
+        }
     }
 
     @GetMapping("/uutiset")
@@ -124,19 +123,15 @@ public class UutinenController {
             
     @PostMapping("/uutiset/{uutinenId}/kategoriat" )
     public String addKategoria(@PathVariable Long uutinenId, Model model, @RequestParam Long kategoriaId) {
-        System.out.println("CNTR: Liitä kateg");
         uutinenService.LiitaKategoria(uutinenId, kategoriaId);
         return "redirect:/hallintapaneeli";
     }             
 
     @PostMapping("/uutiset/{uutinenId}/kuva")
     public String addKuva(@PathVariable Long uutinenId, Model model, @RequestParam("kuvaFile") MultipartFile kuvaFile) throws IOException {
-        System.out.println("POST KUVA");
         if (!kuvaFile.getContentType().contains("image/")) {
-            System.out.println("NOT KUVA");
             return "redirect:/hallintapaneeli";
         }
-        System.out.println("KUVA");
         KuvaObjekti kuvaObjekti = new KuvaObjekti();
         kuvaObjekti.setKuva(kuvaFile.getBytes());
         Uutinen uutinen = uutinenRepository.getOne(uutinenId);
@@ -144,7 +139,6 @@ public class UutinenController {
         kuvaRepository.save(kuvaObjekti);         
         
         uutinen.setKuvaObjektiId(kuvaObjekti.getId());
-        System.out.println("KuvaobjektiId "+kuvaObjekti.getId());
         uutinenRepository.save(uutinen);
 
         return "redirect:/hallintapaneeli";
