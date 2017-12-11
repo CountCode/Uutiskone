@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import wad.domain.Account;
 import wad.domain.Kirjoittaja;
 import wad.domain.KuvaObjekti;
 import wad.domain.Uutinen;
+import wad.repository.AccountRepository;
+import wad.repository.KirjoittajaRepository;
 import wad.repository.KuvaRepository;
 import wad.repository.UutinenRepository;
 import wad.service.UutinenService;
@@ -38,6 +43,12 @@ public class UutinenController {
     
     @Autowired
     private KuvaRepository kuvaRepository;
+
+    @Autowired
+    private KirjoittajaRepository kirjoittajaRepository;
+    
+    @Autowired
+    private AccountRepository accountRepository;    
     
     @Autowired
     private UutinenService uutinenService;    
@@ -56,6 +67,18 @@ public class UutinenController {
                 + "saadaan tosi kätevä pipeline ohjelmistotuotantoon.");
 
         uutinenRepository.save(uut);
+        
+        uut = new Uutinen();
+        uut.setOtsikko("Muuta kivaa");
+        uut.setIngressi("Muuta harrastuksia. Liikunta, lukeminen, laulu.");
+        uut.setJulkaisuaika(LocalDateTime.now());
+        uut.setLukumaara(0);
+        uut.setTeksti("Vaikka ohjelmointi onkin tosi kivaa muitakin asioita kannataa tehdä."
+                + " Liikunta laittaa veren kiertämään niin että aivotkin saavat happea "
+                + "samalla aineenvaihdunta paranee.");
+
+        uutinenRepository.save(uut);
+        
     }
 
     @GetMapping("/uutiset")
@@ -68,8 +91,6 @@ public class UutinenController {
     @GetMapping("/uutiset/{id}")
     public String uutinen(@PathVariable Long id, Model model) {
         Uutinen uutinen = uutinenRepository.getOne(id);
-        System.out.println("UUTINEN");
-        System.out.println(uutinen.getOtsikko());        
         
         uutinen.luettu();
         uutinenRepository.save(uutinen);
@@ -79,9 +100,18 @@ public class UutinenController {
     
     @PostMapping("/uutiset" )
     public String addUutinen(Model model, @ModelAttribute Uutinen uutinen) {
-        System.out.println("Uutinen lisäys");
-        uutinen.setJulkaisuaika(LocalDateTime.now());
-        uutinenRepository.save(uutinen);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account account = accountRepository.findByUsername(auth.getName());
+        Kirjoittaja kirjoittaja = kirjoittajaRepository.findByAccount(account);
+
+        uutinen.addKirjoittaja(kirjoittaja);
+        uutinen.setJulkaisuaika(LocalDateTime.now());        
+        
+        uutinen = uutinenRepository.save(uutinen);
+        kirjoittaja.addUutinen(uutinen);
+        kirjoittajaRepository.save(kirjoittaja);
+        
         return "redirect:/hallintapaneeli";
     }
     
