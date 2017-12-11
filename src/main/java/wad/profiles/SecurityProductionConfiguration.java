@@ -13,22 +13,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityProductionConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Ei päästetä käyttäjää mihinkään sovelluksen resurssiin ilman
-        // kirjautumista. Tarjotaan kuitenkin lomake kirjautumiseen, mihin
-        // pääsee vapaasti. Tämän lisäksi uloskirjautumiseen tarjotaan
-        // mahdollisuus kaikille. 
+        // poistetaan csrf-tarkistus käytöstä h2-konsolin vuoksi
+        http.csrf().disable();
+        // sallitaan framejen käyttö
+        http.headers().frameOptions().sameOrigin();
+        
         http.authorizeRequests()
-                .anyRequest().authenticated().and()
-                .formLogin().permitAll().and()
+                .antMatchers("/h2-console/*").permitAll()
+                .antMatchers("/uutiset").permitAll()                
+                .anyRequest().authenticated();
+        http.formLogin()
+                .permitAll(). and()
                 .logout().permitAll();
-    }
+    } 
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // käyttäjällä jack, jonka salasana on bauer, on rooli USER
-        auth.inMemoryAuthentication()
-                .withUser("jack").password("bauer").roles("USER");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
