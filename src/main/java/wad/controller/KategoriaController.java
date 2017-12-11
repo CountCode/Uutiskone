@@ -24,6 +24,8 @@ public class KategoriaController {
     
     @PostConstruct
     public void init() {
+      
+        /*
         Kategoria ktg = new Kategoria();
         if (kategoriaRepository.findByNimi("Ohjelmointi").isEmpty()){
             ktg.setNimi("Ohjelmointi");
@@ -39,6 +41,7 @@ public class KategoriaController {
             ktg.setNimi("Osaaminen");
             kategoriaRepository.save(ktg);        
         }
+*/
     }
     
     
