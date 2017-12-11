@@ -14,26 +14,43 @@
 
         <ul>
             <li th:each="uutinen : ${uutiset}">
-                <span th:text="${uutinen.otsikko}">item name</span>
-                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="DELETE"><input type="submit" value="Poista"/></form>
-                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="POST"><input type="submit" value="Muokkaa"/></form>
-                <form th:action="@{/uutiset/{uutinenId}/kirjoittajat(uutinenId=${uutinen.id})}" method="POST">
-                    <select name="kirjoittajaId">
-                        <option th:each="kirjoittaja : ${kirjoittajat}" th:value="${kirjoittaja.id}" th:text="${kirjoittaja.nimi}"></option>
-                    </select>
-                    <input type="submit" value="Lisää kirjoittaja"/>
-                </form>
+                <span th:text="${uutinen.otsikko}">otsikko</span><br>
+                <span th:text="${uutinen.ingressi}">otsikko</span><br>
+                <span th:text="${uutinen.teksti}">otsikko</span><br>
+                <img th:src="@{/kuva/{kuvaId}(kuvaId=${uutinen.kuvaObjektiId})}" alt="Kuva" style="width:100px;height:100px;"></img><br>
+                <form th:action="@{/uutiset/{uutinenId}/kuva(uutinenId=${uutinen.id})}" method="POST" enctype="multipart/form-data">
+                    <span>Kuva:</span>            
+                    <input type="file" name="kuvaFile"/>                    
+                    <input type="submit" value="Lisää kuva"/>
+                </form>  
+                <span>Kategoriat: </span>
                 <form th:action="@{/uutiset/{uutinenId}/kategoriat(uutinenId=${uutinen.id})}" method="POST">
                     <select name="kategoriaId">
                         <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.id}" th:text="${kategoria.nimi}"></option>
                     </select>
                     <input type="submit" value="Lisää kategoria"/>
-                </form>
-                <form th:action="@{/uutiset/{uutinenId}/kuva(uutinenId=${uutinen.id})}" method="POST" enctype="multipart/form-data">
-                    <span>Kuva:</span>            
-                    <input type="file" name="kuvaFile"/>                    
-                    <input type="submit" value="Lisää kuva"/>
-                </form>    
+                </form>                
+                <ul th:each="kategoria : ${uutinen.kategoriat} " >
+                    <li th:text="${kategoria.nimi}">
+                    </li>
+                </ul>    
+                <span>Kirjoittajat: </span>
+                <form th:action="@{/uutiset/{uutinenId}/kirjoittajat(uutinenId=${uutinen.id})}" method="POST">
+                    <select name="kirjoittajaId">
+                        <option th:each="kirjoittaja : ${kirjoittajat}" th:value="${kirjoittaja.id}" th:text="${kirjoittaja.nimi}"></option>
+                    </select>
+                    <input type="submit" value="Lisää kirjoittaja"/>
+                </form>                  
+                <ul th:each="kirjoittaja : ${uutinen.kirjoittajat}">
+                    <li th:text="${kirjoittaja.nimi}">
+                    </li>
+                </ul>
+
+                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="DELETE"><input type="submit" value="Poista"/></form>
+                <form th:action="@{/uutiset/{id}(id=${uutinen.id})}" th:method="POST"><input type="submit" value="Muokkaa"/></form>
+              
+
+            
             </li>
         </ul>
       
@@ -44,14 +61,9 @@
             <input type="text" name="otsikko"/><br/>
             <span>Ingressi:</span>
             <textarea name="ingressi" rows="5" cols="30"></textarea><br/>              
-<!--            <input type="text" name="ingressi"/><br/> 
-            <span>Kuva:</span>            
-            <input type="file" name="kuva"/><br/>            
--->
-<span>Teksti:</span>
+            <span>Teksti:</span>
             <textarea name="teksti" rows="10" cols="30"></textarea><br/>            
-<!--            <input type="text" name="teksti"/><br/>      
--->
+
             <input type="submit" value="Lisää!"/>
         </form>        
   
