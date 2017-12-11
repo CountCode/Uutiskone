@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import wad.domain.KuvaObjekti;
 import wad.repository.KuvaRepository;
 
-@Transactional
+// @Transactional
 @Controller
 public class KuvaController {
         

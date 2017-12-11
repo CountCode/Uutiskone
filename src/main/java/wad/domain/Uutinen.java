@@ -36,7 +36,6 @@ public class Uutinen extends AbstractPersistable<Long> {
     private int lukumaara;
        
     public void addKirjoittaja(Kirjoittaja kirjoittaja){
-        System.out.println("Lisää kirjoittaja");
         if (this.kirjoittajat!=null){
             this.kirjoittajat.add(kirjoittaja);
         } else {
@@ -46,12 +45,9 @@ public class Uutinen extends AbstractPersistable<Long> {
     }
     
     public void addKategoria(Kategoria kategoria){
-        System.out.println("Lisää kategoria");
         if (this.kategoriat!=null){
-            System.out.println("NOT NULL");
             this.kategoriat.add(kategoria);
         } else {
-            System.out.println("NULL");
             this.kategoriat = new ArrayList<>();
             this.kategoriat.add(kategoria);
         }
