@@ -89,7 +89,10 @@ public class UutinenService {
             kategoriaRepository.save(kategoria);
         }
         
-        kuvaRepository.deleteById(uutinen.getKuvaObjektiId());
+        Long kuvaObjektiId = uutinen.getKuvaObjektiId();
+        if (kuvaObjektiId!= null){
+            kuvaRepository.deleteById(uutinen.getKuvaObjektiId());
+        }
         
         uutinenRepository.deleteById(uutinen.getId());
     }
